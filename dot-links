@@ -1,0 +1,79 @@
+#!/bin/bash
+#
+# Copyright (c) 2017 Joshua Hughes <kivhift@gmail.com>
+#
+set -eu -o pipefail
+
+print_usage() {
+    cat <<EOT
+usage: ${0##*/} [-b <basedir>] [-h] [-L <links>] [-l <link>] [-r]
+
+ -b <basedir>: create symlinks under <basedir> (default: $HOME)
+ -h: print help
+ -L <links>: read files/directories to link from <links>
+ -l <link>: link <link>
+ -r: remove the given links
+EOT
+}
+
+die() {
+    local usage=
+    [ $# -gt 0 ] && [ "$1" = "-u" ] && usage="y" && shift
+    [ $# -gt 0 ] && echo " ** $@"
+    [ "$usage" ] && echo && print_usage
+    exit 1
+}
+
+declare -A to_link=()
+declare opt base=$HOME remove=
+while getopts ":b:hL:l:r" opt; do
+    case $opt in
+    b)
+        [ -d $OPTARG ] || die -u "$OPTARG is not an existing directory"
+        base=$OPTARG
+        ;;
+    h)
+        print_usage
+        exit 0
+        ;;
+    L)
+        [ -r $OPTARG ] || die -u "Could not open $OPTARG for reading"
+        declare -a line
+        while read -a line; do
+            for opt in ${line[*]}; do
+                to_link[$opt]=1
+            done
+        done < $OPTARG
+        ;;
+    l)
+        to_link[$OPTARG]=1
+        ;;
+    r)
+        remove=y
+        ;;
+    :)
+        die -u "-$OPTARG requires an argument"
+        ;;
+    ?)
+        die -u "Invalid option given: $OPTARG"
+        ;;
+    esac
+done
+
+[ -d $base ] || die "$base is not an existing directory"
+[ ${#to_link[*]} -gt 0 ] || die -u "You didn't given anything to link"
+declare x
+for x in ${!to_link[*]}; do
+    [[ $x =~ dot[.].+ ]] || die "$x does not start with 'dot.'"
+    [ -r $x ] || die "Could not find $x or it's not readable"
+done
+
+declare name targ
+for x in ${!to_link[*]}; do
+    targ=$PWD/$x
+    name=$base/${x#dot}
+    [ -h $name ] && rm $name
+    [ -z "$remove" ] || continue
+    [ ! -e $name ] || die "$name already exists and isn't a symlink"
+    ln -s -T $targ $name || die "Had trouble linking $x"
+done

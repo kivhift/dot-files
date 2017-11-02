@@ -1,0 +1,36 @@
+# History stuff inspired by Georg Brandl's pythonrc @
+# https://bitbucket.org/birkenfeld/dotfiles/src
+
+import atexit
+import os
+import sys
+__ih = '__interactivehook__'
+
+# I'll take care of my own readline setup (thanks 3.4).
+if hasattr(sys, __ih): delattr(sys, __ih)
+
+try:
+    import readline
+    import rlcompleter
+
+    readline.parse_and_bind('tab: complete')
+
+    history_file = os.path.expanduser('~/.py_history')
+    if os.path.exists(history_file):
+        readline.set_history_length(10000)
+        readline.read_history_file(history_file)
+
+    # Override completer to disable '(' on callable.
+    completer = rlcompleter.Completer()
+    completer._callable_postfix = lambda val, word: word
+    readline.set_completer(completer.complete)
+
+    atexit.register(readline.write_history_file, history_file)
+
+    del history_file, readline, rlcompleter, completer
+except ImportError:
+    print(' * readline stuff not available.')
+
+del atexit, os, sys, __ih
+
+# vim: filetype=python

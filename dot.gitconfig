@@ -1,0 +1,12 @@
+[user]
+	name = Joshua Hughes
+	email = kivhift@gmail.com
+[color]
+	branch = auto
+	status = auto
+	diff = auto
+	ui = auto
+[status]
+	showUntrackedFiles = no
+[core]
+	autocrlf = false

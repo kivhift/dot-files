@@ -1,0 +1,4 @@
+set bell-style visible
+set show-all-if-ambiguous on
+#set horizontal-scroll-mode on
+#set editing-mode vi

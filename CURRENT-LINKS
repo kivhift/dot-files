@@ -1,0 +1,14 @@
+dot.bash_aliases
+dot.bash_logout
+dot.bash_profile
+dot.bashrc
+dot.dir_colors
+dot.gitconfig
+dot.hgrc
+dot.inputrc
+dot.ipython
+dot.pythonrc
+dot.taskrc
+dot.tmux.conf
+dot.vim
+dot.vimrc

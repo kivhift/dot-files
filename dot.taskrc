@@ -1,0 +1,13 @@
+# Configuration file for taskwarrior first developed for...
+# task --version == 2.2.0
+#
+# For now, I'm just tweaking the default values.
+#
+dateformat = Y-M-D
+dateformat.annotation = Y-M-D H:N:S
+dateformat.edit = Y-M-D H:N:S
+dateformat.holiday = Y-M-D
+dateformat.info = Y-M-D H:N:S
+dateformat.report = Y-M-D
+journal.time = on
+weekstart = Monday
