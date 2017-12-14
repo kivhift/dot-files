@@ -6,13 +6,15 @@ set -eu -o pipefail
 
 print_usage() {
     cat <<EOT
-usage: ${0##*/} [-b <basedir>] [-h] [-L <links>] [-l <link>] [-r]
+usage: ${0##*/} [-b <basedir>] [-d] [-h] [-l <link>] [-L <links>] [-r] [-v]
 
  -b <basedir>: create symlinks under <basedir> (default: $HOME)
+ -d: diff <basedir> with dot.*
  -h: print help
- -L <links>: read files/directories to link from <links>
  -l <link>: link <link>
+ -L <links>: read files/directories to link from <links>
  -r: remove the given links
+ -v: view diffs
 EOT
 }
 
@@ -25,12 +27,15 @@ die() {
 }
 
 declare -A to_link=()
-declare opt base=$HOME remove=
-while getopts ":b:hL:l:r" opt; do
+declare x opt base=$HOME remove= show_diff_status= view_diffs=
+while getopts ":b:dhL:l:rv" opt; do
     case $opt in
     b)
         [ -d $OPTARG ] || die -u "$OPTARG is not an existing directory"
         base=$OPTARG
+        ;;
+    d)
+        show_diff_status=y
         ;;
     h)
         print_usage
@@ -51,6 +56,9 @@ while getopts ":b:hL:l:r" opt; do
     r)
         remove=y
         ;;
+    v)
+        view_diffs=y
+        ;;
     :)
         die -u "-$OPTARG requires an argument"
         ;;
@@ -61,8 +69,31 @@ while getopts ":b:hL:l:r" opt; do
 done
 
 [ -d $base ] || die "$base is not an existing directory"
+
+if [ "$show_diff_status" ]; then
+    declare ans cfg
+    declare -A diffs=()
+    for x in $(find . -mindepth 1 -maxdepth 1 -name 'dot.*'); do
+        cfg=$base/${x#'./dot'}
+        [ -e $cfg ] || { echo " ? ${cfg##*/}"; continue; }
+        diff -r $cfg $x > /dev/null || diffs[$cfg]=$x
+    done
+
+    for cfg in ${!diffs[*]}; do
+        echo " ! ${cfg##*/}"
+    done
+
+    [ "$view_diffs" -a ${#diffs[*]} -gt 0 ] || exit 0
+
+    for cfg in ${!diffs[*]}; do
+        [ -f ${diffs[$cfg]} ] || continue
+        read -p "vimdiff ${cfg##*/}?: [y]: " ans
+        [ -z "$ans" -o "$ans" == "y" ] && vimdiff ${diffs[$cfg]} $cfg
+    done
+    exit 0
+fi
+
 [ ${#to_link[*]} -gt 0 ] || die -u "You didn't given anything to link"
-declare x
 for x in ${!to_link[*]}; do
     [[ $x =~ dot[.].+ ]] || die "$x does not start with 'dot.'"
     [ -r $x ] || die "Could not find $x or it's not readable"
