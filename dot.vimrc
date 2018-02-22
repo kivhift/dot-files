@@ -9,9 +9,10 @@ set foldmethod=indent
 set foldopen=all foldclose=all
 " Start off with folding disabled.
 set nofoldenable foldcolumn=0
-nnoremap <silent> <leader>f :call ToggleFolding()<cr>
+nnoremap <silent> <expr> <leader>f ToggleFolding()
+nnoremap <silent> <expr> <leader>fs FS_ToggleFoldAroundSearch({'context':1})
 function! ToggleFolding()
-    if eval("&foldcolumn")
+    if &foldenable
         set nofoldenable foldcolumn=0
     else
         set foldenable foldcolumn=4
@@ -19,7 +20,7 @@ function! ToggleFolding()
 endfunction
 
 if has('persistent_undo')
-    set undodir=$HOME/.vim/undo
+    set undodir=~/.vim/undo
     set undofile
 endif
 
@@ -39,17 +40,17 @@ set ruler
 
 " Show status line with info. about current file, etc.
 function! StatusLine()
-    let L = "%t%<(%M%n,%{&ff},%{&fenc}"
-    if eval('&spell')
+    let L = "%t%<(%M%n%R%W%Y,%{&ff},%{&fenc}"
+    if &spell
         let L .= ",sp"
     endif
-    if eval('&list')
+    if &list
         let L .= ",li"
     endif
-    if eval('&paste')
+    if &paste
         let L .= ",pa"
     endif
-    let L .= ",%R%W%Y)%=%B@%O %l/%L %c%V %p%%"
+    let L .= ")%=0x%B@b%O L%l/%L C%c%V %p%%"
 
     return L
 endfunction
@@ -169,7 +170,7 @@ vnoremap p <Esc>:let current_reg = @"<CR>gvs<C-R>=current_reg<CR><Esc>
 
 " Left hand, stretch no more!  Hmm, laziness ensues.
 inoremap jj <esc>
-inoremap <C-O> <C-\><C-O>
+inoremap <c-o> <c-\><c-o>
 
 " Handy insert maps for a current-date-and-time time stamp.
 inoremap <leader>ts <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
@@ -365,6 +366,7 @@ if has("autocmd")
     autocmd FileType c,cpp :nmap <buffer> <f7> :make<cr>
     autocmd FileType c,cpp,python,sh
         \ :nmap <buffer> <f5> :call MaybeRunTestApp()<cr>
+    autocmd Filetype python,sh let b:testapp=expand('%')
     autocmd FileType c,cpp,python,sh
         \ :nmap <buffer> <f6> :call GetTestAppName()<cr>
 
@@ -522,6 +524,11 @@ function! Trim_dead_whitespace()
     call setpos('.', curr_pos)
 endfunction
 nmap <silent> <Leader>T :call Trim_dead_whitespace()<cr>
+
+" Tidy the cursor's current paragraph by selecting it and then sorting.
+nmap <silent> <leader>t vip:sort<cr>
+" Select the cursor's current paragraph and gq it.
+nmap <silent> <leader>g vipgq
 
 " Use the arrow keys to navigate after a :(help|vim)grep
 nmap <silent> <right>         :cnext<cr>

@@ -67,7 +67,7 @@ nvim ()
         fi
         case $arg in
             *.sh | *.bash )
-                echo -e "#!/bin/bash\n" >> $arg
+                echo -e "#!/bin/bash\n\nset -eu -o pipefail\n" >> $arg
                 chmod +x $arg
             ;;
             *.pl )
@@ -75,7 +75,7 @@ nvim ()
                 chmod +x $arg
             ;;
             *.py )
-                echo -e "#!/usr/bin/env python\n" >> $arg
+                echo -e "#!/usr/bin/env python3\n" >> $arg
                 chmod +x $arg
             ;;
             *.html )
@@ -141,6 +141,8 @@ shopt -s no_empty_cmd_completion checkwinsize
 hn=$(hostname)
 hnrc=~/.bashrc_${hn,,}
 [ -r $hnrc ] && . $hnrc
-unset hn hnrc
+lrc=~/.bashrc_local
+[ -r $lrc ] && . $lrc
+unset hn hnrc lrc
 
 # vim:ft=sh

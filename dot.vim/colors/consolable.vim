@@ -28,8 +28,8 @@ elseif 256 == &t_Co
     hi FoldColumn ctermfg=39 ctermbg=NONE cterm=NONE
     hi SignColumn ctermfg=NONE ctermbg=NONE cterm=NONE
     hi IncSearch ctermfg=34 ctermbg=88 cterm=underline
-    hi LineNr ctermfg=24 ctermbg=NONE cterm=NONE
-    hi CursorLineNr ctermfg=88 ctermbg=NONE cterm=underline
+    hi LineNr ctermfg=24 ctermbg=233 cterm=NONE
+    hi CursorLineNr ctermfg=88 ctermbg=202 cterm=bold
     hi MatchParen ctermfg=0 ctermbg=93 cterm=NONE
     hi ModeMsg ctermfg=NONE ctermbg=NONE cterm=NONE
     hi MoreMsg ctermfg=NONE ctermbg=NONE cterm=NONE
@@ -91,8 +91,8 @@ elseif has("gui_running")
     hi FoldColumn guifg=#00afff guibg=NONE gui=NONE
     hi SignColumn guifg=NONE guibg=NONE gui=NONE
     hi IncSearch guifg=#00af00 guibg=#870000 gui=underline
-    hi LineNr guifg=#005f87 guibg=NONE gui=NONE
-    hi CursorLineNr guifg=#870000 guibg=NONE gui=underline
+    hi LineNr guifg=#005f87 guibg=#121212 gui=NONE
+    hi CursorLineNr guifg=#870000 guibg=#ff5f00 gui=bold
     hi MatchParen guifg=#000000 guibg=#8700ff gui=NONE
     hi ModeMsg guifg=NONE guibg=NONE gui=NONE
     hi MoreMsg guifg=NONE guibg=NONE gui=NONE

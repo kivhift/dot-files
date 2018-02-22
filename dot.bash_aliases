@@ -13,6 +13,7 @@ __ls_dots()
     fi
 }
 alias l.=__ls_dots
+alias l.l='__ls_dots -l'
 
 alias l1='ls -1'
 alias l=ls
@@ -21,6 +22,7 @@ alias v='ls -l'
 alias vv='ls -lh'
 alias tp='type -p'
 alias eg='env | grep'
+alias vir='vim -R'
 
 alias h10='history 10'
 alias h20='history 20'
@@ -35,6 +37,7 @@ alias enscript='enscript -2 -r -M Letter'
 alias cal='cal -3m'
 alias grep='grep --color=auto'
 alias gdb='gdb --quiet'
+alias p='python3 -q'
 
 # git
 alias ga='git add'
@@ -54,6 +57,8 @@ alias gsu='git status -s -b -unormal'
 hn=$(hostname)
 hna=~/.bash_aliases_${hn,,}
 [ -r $hna ] && . $hna
-unset hn hna
+la=~/.bash_aliases_local
+[ -r $la ] && . $la
+unset hn hna la
 
 # vim:ft=sh
