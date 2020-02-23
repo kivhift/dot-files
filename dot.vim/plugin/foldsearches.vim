@@ -22,7 +22,7 @@ let s:DEFFOLDLEVEL  = 1000
 " This is what the options are changed to...
 let s:FOLDEXPR = 'FS_FoldSearchLevel()'
 let s:FOLDTEXT = {
-\   'visible'   : "'___/ line ' . (v:foldend+1) . ' \\' . repeat('_',200) ",
+\   'visible'   : 'foldtext()',
 \   'invisible' : "repeat(' ',200)",
 \}
 

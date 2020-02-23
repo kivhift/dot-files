@@ -97,8 +97,8 @@ set spelllang=en_us
 " Do incremental searching so we can bail early if we want to.
 set incsearch
 
-" Don't do the wrap silliness.
-set nowrap
+" Don't do the wrap silliness... but when we enable it, wrap at boundaries.
+set nowrap linebreak
 
 " Keep things quiet!
 set visualbell
@@ -142,7 +142,7 @@ if &term =~ 'xterm' || &term =~ 'screen'
     set termencoding=utf-8
 endif
 
-set listchars=tab:>¬,trail:º,extends:>,precedes:<
+set listchars=tab:>¬,trail:º,extends:…,precedes:…
 
 set runtimepath=$HOME/.vim,$VIMRUNTIME
 
@@ -222,6 +222,8 @@ augroup VimReload
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 augroup end
+" Count the occurrences of current search...
+nnoremap <silent> s# :%s/<c-r>///gn<cr>
 nnoremap <space> <pagedown>
 " This won't work in a terminal since curses can't distinguish between
 " <space> and <s-space>.  Alas, at least the GUI...
@@ -343,15 +345,16 @@ if has("autocmd")
 
     " If we're editing C/C++/Java source...
     autocmd FileType c,cpp,java setlocal formatoptions-=t
-    autocmd FileType c,cpp,java :ino <buffer> if( if()<space>{<cr>}<up><esc>$F(a
+    autocmd FileType c,cpp,java :ino <buffer> if(
+        \ if<space>()<space>{<cr>}<up><esc>$F(a
     autocmd FileType c,cpp,java :ino <buffer> for(
-        \ for()<space>{<cr>}<up><esc>$F(a
+        \ for<space>()<space>{<cr>}<up><esc>$F(a
     autocmd FileType c,cpp,java :ino <buffer> while(
-        \ while()<space>{<cr>}<up><esc>$F(a
+        \ while<space>()<space>{<cr>}<up><esc>$F(a
     autocmd FileType c,cpp,java :ino <buffer> do<space>{
-        \ do<space>{<cr>}<space>while();<esc>F(a
+        \ do<space>{<cr>}<space>while<space>();<esc>F(a
     autocmd FileType c,cpp,java :ino <buffer> switch(
-        \ switch()<space>{<cr>
+        \ switch<space>()<space>{<cr>
         \#if<space>0<cr>
         \<c-d>case<space>:<cr>break;<cr>
         \#endif<cr>

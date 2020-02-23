@@ -34,6 +34,7 @@ TERM vt100
 TERM screen
 TERM screen-256color
 TERM cygwin
+TERM tmux
 TERM tmux-256color
 
 # EIGHTBIT, followed by '1' for on, '0' for off. (8-bit output)

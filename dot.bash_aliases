@@ -38,6 +38,7 @@ alias cal='cal -3m'
 alias grep='grep --color=auto'
 alias gdb='gdb --quiet'
 alias p='python3 -q'
+alias t=tree
 
 # git
 alias ga='git add'

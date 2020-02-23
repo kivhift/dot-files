@@ -44,7 +44,7 @@ scheme_template = '''\
     hi SignColumn ${_}fg=NONE ${_}bg=NONE ${_}=NONE
     hi IncSearch ${_}fg=$_34 ${_}bg=$_88 ${_}=underline
     hi LineNr ${_}fg=$_24 ${_}bg=$_233 ${_}=NONE
-    hi CursorLineNr ${_}fg=$_88 ${_}bg=$_202 ${_}=bold
+    hi CursorLineNr ${_}fg=$_88 ${_}bg=$_202 ${_}=NONE
     hi MatchParen ${_}fg=$_0 ${_}bg=$_93 ${_}=NONE
     hi ModeMsg ${_}fg=NONE ${_}bg=NONE ${_}=NONE
     hi MoreMsg ${_}fg=NONE ${_}bg=NONE ${_}=NONE

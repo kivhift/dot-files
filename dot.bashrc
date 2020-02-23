@@ -8,7 +8,7 @@
 # This is based on Fedora's /etc/profile.d/256term.sh.
 if [ -n "$COLORTERM$XTERM_VERSION$ROXTERM_ID$KONSOLE_DBUS_SESSION" ] ; then
     case "$TERM" in
-    xterm|screen) TERM=$TERM-256color ;;
+    xterm|screen|tmux) TERM=$TERM-256color ;;
     esac
     export TERM
 
@@ -101,7 +101,7 @@ HTMLTEMPLATE
     vim "$@"
 }
 
-add_to_path ~/bin ~/scripts ~/local/bin
+add_to_path ~/bin ~/scripts ~/local/bin ~/.cargo/bin
 add_to_manpath ~/man
 
 PS1="\[\e[30;42m\]\$\[\e[m\] "

@@ -29,7 +29,7 @@ elseif 256 == &t_Co
     hi SignColumn ctermfg=NONE ctermbg=NONE cterm=NONE
     hi IncSearch ctermfg=34 ctermbg=88 cterm=underline
     hi LineNr ctermfg=24 ctermbg=233 cterm=NONE
-    hi CursorLineNr ctermfg=88 ctermbg=202 cterm=bold
+    hi CursorLineNr ctermfg=88 ctermbg=202 cterm=NONE
     hi MatchParen ctermfg=0 ctermbg=93 cterm=NONE
     hi ModeMsg ctermfg=NONE ctermbg=NONE cterm=NONE
     hi MoreMsg ctermfg=NONE ctermbg=NONE cterm=NONE
@@ -92,7 +92,7 @@ elseif has("gui_running")
     hi SignColumn guifg=NONE guibg=NONE gui=NONE
     hi IncSearch guifg=#00af00 guibg=#870000 gui=underline
     hi LineNr guifg=#005f87 guibg=#121212 gui=NONE
-    hi CursorLineNr guifg=#870000 guibg=#ff5f00 gui=bold
+    hi CursorLineNr guifg=#870000 guibg=#ff5f00 gui=NONE
     hi MatchParen guifg=#000000 guibg=#8700ff gui=NONE
     hi ModeMsg guifg=NONE guibg=NONE gui=NONE
     hi MoreMsg guifg=NONE guibg=NONE gui=NONE
@@ -130,7 +130,7 @@ elseif has("gui_running")
     hi Ignore guifg=#121212 guibg=NONE gui=NONE
     hi Error guifg=#bcbcbc guibg=#870000 gui=NONE
     hi Todo guifg=#5f0000 guibg=#ff5f00 gui=NONE
-    hi String guifg=#008787 guibg=#1c1c1c gui=NONE
+    hi String guifg=#af0087 guibg=#1c1c1c gui=NONE
     hi Number guifg=#af00d7 guibg=#00005f gui=NONE
     hi Function guifg=#00afff guibg=NONE gui=NONE
     hi Keyword guifg=#5f00ff guibg=#00005f gui=NONE
