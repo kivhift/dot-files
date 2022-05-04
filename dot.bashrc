@@ -6,31 +6,34 @@
 [ -r ~/.bash_aliases ] && . ~/.bash_aliases
 
 # This is based on Fedora's /etc/profile.d/256term.sh.
-if [ -n "$COLORTERM$XTERM_VERSION$ROXTERM_ID$KONSOLE_DBUS_SESSION" ] ; then
+if [ -n "$COLORTERM$XTERM_VERSION$ROXTERM_ID$KONSOLE_DBUS_SESSION" ]; then
     case "$TERM" in
     xterm|screen|tmux) TERM=$TERM-256color ;;
     esac
     export TERM
 
-    if [ -n "$TERMCAP" ] && [ "screen-256color" = "$TERM" ] ; then
+    if [ -n "$TERMCAP" ] && [ "screen-256color" = "$TERM" ]; then
         export TERMCAP=$(echo "$TERMCAP" | sed -e 's/Co#8/Co#256/g')
     fi
 fi
 
 # Usage: add_to_path [ path0 path1 ... ]
-add_to_path ()
-{
+add_to_path () {
     local d
-    for d ; do
+    for d; do
         case :$PATH: in
             # If it's already there, don't do anything.
-            *:$d:* )
+            *:$d:*)
             ;;
             # If it's not there, test if it's a directory and add
             # it if it is.
-            * )
-                if [ -d "$d" ] ; then
-                    PATH="${d}:${PATH}"
+            *)
+                if [ -d "$d" ]; then
+                    if [ -z "$PATH" ]; then
+                        PATH="$d"
+                    else
+                        PATH="$d:$PATH"
+                    fi
                 fi
             ;;
         esac
@@ -41,16 +44,20 @@ add_to_path ()
 add_to_manpath ()
 {
     local d
-    for d ; do
+    for d; do
         case :$MANPATH: in
             # If it's already there, don't do anything.
-            *:$d:* )
+            *:$d:*)
             ;;
             # If it's not there, test if it's a directory and add
             # it if it is.
-            * )
-                if [ -d "$d" ] ; then
-                    MANPATH="${d}:${MANPATH}"
+            *)
+                if [ -d "$d" ]; then
+                    if [ -z "$MANPATH" ]; then
+                        MANPATH="$d"
+                    else
+                        MANPATH="$d:$MANPATH"
+                    fi
                 fi
             ;;
         esac
@@ -61,24 +68,24 @@ add_to_manpath ()
 nvim ()
 {
     local arg
-    for arg ; do
-        if [ -e $arg ] ; then
+    for arg; do
+        if [ -e $arg ]; then
             continue
         fi
         case $arg in
-            *.sh | *.bash )
+            *.sh | *.bash)
                 echo -e "#!/bin/bash\n\nset -eu -o pipefail\n" >> $arg
                 chmod +x $arg
             ;;
-            *.pl )
+            *.pl)
                 echo -e "#!/usr/bin/perl -w\n" >> $arg
                 chmod +x $arg
             ;;
-            *.py )
+            *.py)
                 echo -e "#!/usr/bin/env python3\n" >> $arg
                 chmod +x $arg
             ;;
-            *.html )
+            *.html)
                 cat >> $arg <<HTMLTEMPLATE
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -93,7 +100,7 @@ nvim ()
 </html>
 HTMLTEMPLATE
             ;;
-            * )
+            *)
             ;;
         esac
     done
@@ -101,11 +108,25 @@ HTMLTEMPLATE
     vim "$@"
 }
 
-add_to_path ~/bin ~/scripts ~/local/bin ~/.cargo/bin
-add_to_manpath ~/man
+_set_PS1() {
+    local last_ret=$?
 
-PS1="\[\e[30;42m\]\$\[\e[m\] "
-PS2="\[\e[30;41m\].\[\e[m\] "
+    if [ 0 -eq $last_ret ]; then
+        export PS1="\[\e[32m\]$\[\e[m\] "
+    else
+        export PS1="\[\e[31m\]$last_ret $\[\e[m\] "
+    fi
+
+    return $last_ret
+}
+
+# PATH started to get a bit crusty with /snap/bin added multiple times, etc.
+PATH=
+add_to_path /snap/bin /{,usr/}{,local/}{,s}bin ~/.{cargo,local}/bin ~/scripts ~/bin
+add_to_manpath ~/man ~/local/share/man
+
+#PS1="\[\e[30;42m\]\$\[\e[m\] "
+PS2="\[\e[33m\].\[\e[m\] "
 HISTTIMEFORMAT="%Y-%m-%d %T  "
 COLORFGBG="lightgray;black"
 REPLYTO="Joshua Hughes <kivhift@gmail.com>"
@@ -119,18 +140,19 @@ export LESS=FRX
 export SHELL=/bin/bash
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
-export PATH PS1 PS2 COLORFGBG REPLYTO PERL5LIB
+export PATH PS2 COLORFGBG REPLYTO PERL5LIB
 export PYTHONPATH PYTHONSTARTUP
+export PROMPT_COMMAND=_set_PS1
 
 [ -x /usr/bin/dircolors ] && [ -r ~/.dir_colors ] \
     && eval $(/usr/bin/dircolors -b ~/.dir_colors)
 
-if ! shopt -oq posix ; then
+if ! shopt -oq posix; then
     usbc=/usr/share/bash-completion/bash_completion
     ebc=/etc/bash_completion
-    if [ -r $usbc ] ; then
+    if [ -r $usbc ]; then
         . $usbc
-    elif [ -r $ebc ] ; then
+    elif [ -r $ebc ]; then
         . $ebc
     fi
     unset usbc ebc

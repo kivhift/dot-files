@@ -21,7 +21,6 @@ alias a='ls -A'
 alias v='ls -l'
 alias vv='ls -lh'
 alias tp='type -p'
-alias eg='env | grep'
 alias vir='vim -R'
 
 alias h10='history 10'
@@ -32,6 +31,7 @@ alias ...='cd ../.. && pwd'
 
 alias m=less
 alias mk=make
+alias mp='ps fj -u '$(id -u)' -U '$(id -u)
 alias gv='gv -spartan -watch'
 alias enscript='enscript -2 -r -M Letter'
 alias cal='cal -3m'

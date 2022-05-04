@@ -156,10 +156,34 @@ set wildmenu
 set wildmode=longest,full
 set wildignore=*.o,*.py[co]
 
-" Make it easy to see where the cursor has gone.
-nmap <silent> <Leader>c :setlocal invcursorline invcursorcolumn<cr>
-nmap <silent> <Leader>L :setlocal invcursorline<cr>
-nmap <silent> <Leader>C :setlocal invcursorcolumn<cr>
+" Make it easy to see where the cursor has gone.  Alas, it seems that a "bug"
+" has been fixed that previously allowed the highlighting for CursorLineNr to
+" be in effect even though cursorline was not set.  I liked/used the old buggy
+" behavior so if it has been fixed, make things approximately behave the old
+" way...
+if has('patch-8.1.2117')
+    set cursorlineopt=number
+    set cursorline
+    nmap <silent> <Leader>c :call ToggleCursorLineAndColumn()<cr>
+    nmap <silent> <Leader>L :call ToggleCursorLine()<cr>
+
+    function! ToggleCursorLine()
+        if &cursorlineopt == 'number'
+            setlocal cursorlineopt=both
+        else
+            setlocal cursorlineopt=number
+        endif
+    endfunction
+
+    function! ToggleCursorLineAndColumn()
+        call ToggleCursorLine()
+        setlocal cursorcolumn!
+    endfunction
+else
+    nmap <silent> <Leader>c :setlocal cursorline! cursorcolumn!<cr>
+    nmap <silent> <Leader>L :setlocal cursorline!<cr>
+endif
+nmap <silent> <Leader>C :setlocal cursorcolumn!<cr>
 
 " Make p in Visual mode replace the selected text with the "" register.
 vnoremap p <Esc>:let current_reg = @"<CR>gvs<C-R>=current_reg<CR><Esc>
@@ -213,10 +237,10 @@ command! -nargs=? CppSearchAdd vimgrepadd /<args>/j **/*.cpp **/*.h **/*.cc **/*
 command! -nargs=? PySearch vimgrep /<args>/j **/*.py | copen
 command! -nargs=? PySearchAdd vimgrepadd /<args>/j **/*.py | copen
 
-nmap <silent> <Leader>s :setlocal invspell<cr>
-nmap <silent> <Leader>l :setlocal invlist<cr>
-nmap <silent> <Leader>n :setlocal invnumber<cr>
-nmap <silent> <Leader>r :setlocal invrelativenumber<cr>
+nmap <silent> <Leader>s :setlocal spell!<cr>
+nmap <silent> <Leader>l :setlocal list!<cr>
+nmap <silent> <Leader>n :setlocal number!<cr>
+nmap <silent> <Leader>r :setlocal relativenumber!<cr>
 nmap <silent> <Leader>v :next $MYVIMRC<cr>
 augroup VimReload
     autocmd!
@@ -256,33 +280,10 @@ function! ToggleTrailingWhiteSpaceHighlight()
 endfunction
 nmap <silent> <Leader>w :call ToggleTrailingWhiteSpaceHighlight()<cr>
 " Always make the trailing whitespace visible.
-let b:trailing_ws_id = matchadd('TrailingWhiteSpace', '\s\+$')
-
-" Setup the tagslist plugin.
-let Tlist_Close_On_Select = 1
-let Tlist_Compact_Format = 1
-let Tlist_Display_Prototype = 0
-let Tlist_Display_Tag_Scope = 1
-let Tlist_Enable_Fold_Column = 0
-let Tlist_Exit_OnlyWindow = 1
-let Tlist_GainFocus_On_ToggleOpen = 1
-let Tlist_Process_File_Always = 0
-let Tlist_Sort_Type = "name"
-let Tlist_Use_Horiz_Window = 1
-let Tlist_WinHeight = 20
-nmap <silent> <Leader>t :TlistToggle<cr>
-
-" Setup the outlookvim plugin.
-let g:outlook_use_tabs = 1
-let g:outlook_servername = 'OUTLOOK'
-let g:outlook_supported_body_format = 'html'
-let g:outlook_noautoread = 0
-let g:outlook_nobdelete = 0
-let g:outlook_nodelete_unload = 0
-let g:outlook_save_cscript_output = 1
-let g:outlook_debug = 0
-let g:outlook_always_use_Unicode = 1
-let g:outlook_scan_email_body_Unicode = 1
+augroup TrailingWS
+    autocmd!
+    autocmd BufRead * let b:trailing_ws_id = matchadd('TrailingWhiteSpace', '\s\+$')
+augroup end
 
 " Set this so that Python files will be highlighted as wanted.
 let python_highlight_all = 1
@@ -360,7 +361,7 @@ if has("autocmd")
         \#endif<cr>
         \<c-d>default:<cr>break;<cr>
         \}<esc>7k^wa
-    autocmd FileType c,cpp,java,javascript
+    autocmd FileType c,cpp,java,javascript,go,rust
         \ :ino <buffer> {<cr> {<cr>}<up><end><cr>
     autocmd FileType c,cpp,java setlocal matchpairs+==:;
     autocmd FileType c,cpp :ino <buffer> #if #if<space><cr>#endif<up>
@@ -549,3 +550,7 @@ function! ShiftAndKeepVisualSelection(cmd)
         return a:cmd
     endif
 endfunction
+
+packadd minpac
+call minpac#init()
+call minpac#add('tpope/vim-commentary')
