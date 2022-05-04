@@ -1,11 +1,11 @@
 #!/bin/bash
 #
-# Copyright (c) 2017 Joshua Hughes <kivhift@gmail.com>
+# Copyright (c) 2017, 2022 Joshua Hughes <kivhift@gmail.com>
 #
 set -eu -o pipefail
 
 print_usage() {
-    cat <<EOT
+    echo "
 usage: ${0##*/} [-b <basedir>] [-d] [-h] [-l <link>] [-L <links>] [-r] [-v]
 
  -b <basedir>: create symlinks under <basedir> (default: $HOME)
@@ -15,7 +15,7 @@ usage: ${0##*/} [-b <basedir>] [-d] [-h] [-l <link>] [-L <links>] [-r] [-v]
  -L <links>: read files/directories to link from <links>
  -r: remove the given links
  -v: view diffs
-EOT
+"
 }
 
 die() {
