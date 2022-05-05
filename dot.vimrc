@@ -22,6 +22,10 @@ endfunction
 if has('persistent_undo')
     set undodir=~/.vim/undo
     set undofile
+    augroup VimRC
+        autocmd!
+        autocmd BufWritePre /tmp/* setlocal noundofile
+    augroup end
 endif
 
 set pastetoggle=<insert>
@@ -97,6 +101,10 @@ set spelllang=en_us
 " Do incremental searching so we can bail early if we want to.
 set incsearch
 
+" So that we don't go in circles, stop at both ends of the buffer when
+" searching.
+set nowrapscan
+
 " Don't do the wrap silliness... but when we enable it, wrap at boundaries.
 set nowrap linebreak
 
@@ -114,7 +122,7 @@ set title
 " more...  So, make the shift width and number of logical spaces per tab be 4
 " and expand tabs.  However, respect stuff that's already there and use an
 " autocmd below to detect tabs and adjust to 8 with no expansion.
-set shiftwidth=4 tabstop=4 expandtab
+set shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 
 " Make < and > round to shiftwidth columns as well.
 set shiftround
@@ -144,7 +152,7 @@ endif
 
 set listchars=tab:>¬,trail:º,extends:…,precedes:…
 
-set runtimepath=$HOME/.vim,$VIMRUNTIME
+" set runtimepath=$HOME/.vim,$VIMRUNTIME
 
 " Make it easier to use movements but use the fewest columns possible.
 set relativenumber number
@@ -241,7 +249,7 @@ nmap <silent> <Leader>s :setlocal spell!<cr>
 nmap <silent> <Leader>l :setlocal list!<cr>
 nmap <silent> <Leader>n :setlocal number!<cr>
 nmap <silent> <Leader>r :setlocal relativenumber!<cr>
-nmap <silent> <Leader>v :next $MYVIMRC<cr>
+nmap <silent> <Leader>v :tabedit $MYVIMRC<cr>
 augroup VimReload
     autocmd!
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
@@ -275,14 +283,14 @@ function! ToggleTrailingWhiteSpaceHighlight()
         call matchdelete(b:trailing_ws_id)
         unlet b:trailing_ws_id
     else
-        let b:trailing_ws_id = matchadd('TrailingWhiteSpace', '\s\+$')
+        let b:trailing_ws_id = matchadd('ErrorMsg', '\s\+$')
     endif
 endfunction
 nmap <silent> <Leader>w :call ToggleTrailingWhiteSpaceHighlight()<cr>
 " Always make the trailing whitespace visible.
 augroup TrailingWS
     autocmd!
-    autocmd BufRead * let b:trailing_ws_id = matchadd('TrailingWhiteSpace', '\s\+$')
+    autocmd BufRead * let b:trailing_ws_id = matchadd('ErrorMsg', '\s\+$')
 augroup end
 
 " Set this so that Python files will be highlighted as wanted.
@@ -296,7 +304,7 @@ if has("autocmd")
     " if a tab is found.
     autocmd BufReadPost *
         \ if search("\t", "cnw") > 0
-        \ |   setlocal shiftwidth=8 tabstop=8 noexpandtab
+        \ |   setlocal shiftwidth=8 tabstop=8 softtabstop=8 noexpandtab
         \ | endif
 
     " When editing a file, always jump to the last known cursor position.
@@ -340,6 +348,7 @@ if has("autocmd")
     autocmd FileType rst setlocal spell
 
     autocmd FileType gitcommit setlocal textwidth=75
+    autocmd FileType rust setlocal textwidth=79
 
     " For all mail set 'textwidth' to 70 characters.
     autocmd FileType mail setlocal textwidth=70 spell
@@ -524,7 +533,8 @@ nmap <silent> <Leader>u :call Underline_with('-')<cr>
 " substitute.
 function! Trim_dead_whitespace()
     let curr_pos = getpos('.')
-    :%substitute/\v\s+$//eg
+    " :%substitute/\v\s+$//eg
+    :%substitute/\v(\s+$)|(($\n\s*)+%$)//eg
     call setpos('.', curr_pos)
 endfunction
 nmap <silent> <Leader>T :call Trim_dead_whitespace()<cr>
