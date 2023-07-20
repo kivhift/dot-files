@@ -17,52 +17,34 @@ if [ -n "$COLORTERM$XTERM_VERSION$ROXTERM_ID$KONSOLE_DBUS_SESSION" ]; then
     fi
 fi
 
-# Usage: add_to_path [ path0 path1 ... ]
-add_to_path () {
-    local d
+# Usage: _path_adder VARIABLE [ DIR ... ]
+_path_adder() {
+    local -r P=$1 && shift
+    local d val=${!P}
     for d; do
-        case :$PATH: in
+        [ -h $d ] && d=$(/bin/readlink -f $d 2> /dev/null)
+        [ -d "$d" ] || continue
+        d=$(/bin/realpath $d 2> /dev/null)
+        case :$val: in
             # If it's already there, don't do anything.
             *:$d:*)
             ;;
-            # If it's not there, test if it's a directory and add
-            # it if it is.
+            # Otherwise, add it.
             *)
-                if [ -d "$d" ]; then
-                    if [ -z "$PATH" ]; then
-                        PATH="$d"
-                    else
-                        PATH="$d:$PATH"
-                    fi
+                if [ -z "$val" ]; then
+                    val=$d
+                else
+                    val=$val:$d
                 fi
             ;;
         esac
     done
+
+    [ "$val" ] && export $P=$val
 }
 
-# Usage: add_to_manpath [ path0 path1 ... ]
-add_to_manpath ()
-{
-    local d
-    for d; do
-        case :$MANPATH: in
-            # If it's already there, don't do anything.
-            *:$d:*)
-            ;;
-            # If it's not there, test if it's a directory and add
-            # it if it is.
-            *)
-                if [ -d "$d" ]; then
-                    if [ -z "$MANPATH" ]; then
-                        MANPATH="$d"
-                    else
-                        MANPATH="$d:$MANPATH"
-                    fi
-                fi
-            ;;
-        esac
-    done
-}
+alias add_to_path='_path_adder PATH'
+alias add_to_manpath='_path_adder MANPATH'
 
 # Usage: nvim [ file0 file1 ... ]
 nvim ()
@@ -122,10 +104,9 @@ _set_PS1() {
 
 # PATH started to get a bit crusty with /snap/bin added multiple times, etc.
 PATH=
-add_to_path /snap/bin /{,usr/}{,local/}{,s}bin ~/.{cargo,local}/bin ~/scripts ~/bin
+add_to_path ~/bin ~/scripts ~/.{cargo,local}/bin /{,usr/}{,local/}{,s}bin /snap/bin
 add_to_manpath ~/man ~/local/share/man
 
-#PS1="\[\e[30;42m\]\$\[\e[m\] "
 PS2="\[\e[33m\].\[\e[m\] "
 HISTTIMEFORMAT="%Y-%m-%d %T  "
 COLORFGBG="lightgray;black"
