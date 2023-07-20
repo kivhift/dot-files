@@ -21,6 +21,7 @@ alias a='ls -A'
 alias v='ls -l'
 alias vv='ls -lh'
 alias tp='type -p'
+alias tt='type -t'
 alias vir='vim -R'
 
 alias h10='history 10'
