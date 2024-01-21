@@ -28,7 +28,7 @@ if has('persistent_undo')
     augroup end
 endif
 
-set pastetoggle=<insert>
+set pastetoggle=<f12>
 
 " Always want autoindenting to be on
 set autoindent
@@ -204,6 +204,9 @@ vnoremap p <Esc>:let current_reg = @"<CR>gvs<C-R>=current_reg<CR><Esc>
 inoremap jj <esc>
 inoremap <c-o> <c-\><c-o>
 
+inoremap <c-l> <right>
+inoremap <c-h> <left>
+
 " Handy insert maps for a current-date-and-time time stamp.
 inoremap <leader>ts <C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>
 inoremap [ts [<C-R>=strftime("%Y-%m-%d %H:%M:%S")<CR>]
@@ -274,9 +277,6 @@ function! HelpInNewTab()
 endfunction
 set virtualedit=block
 nmap <silent> // :nohlsearch<cr>
-nmap / /\v
-nmap ? ?\v
-cmap s/ s/\v
 
 function! ToggleTrailingWhiteSpaceHighlight()
     if exists('b:trailing_ws_id')
@@ -349,6 +349,8 @@ if has("autocmd")
 
     autocmd FileType gitcommit setlocal textwidth=75
     autocmd FileType rust setlocal textwidth=79
+
+    autocmd FileType scheme setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
     " For all mail set 'textwidth' to 70 characters.
     autocmd FileType mail setlocal textwidth=70 spell
