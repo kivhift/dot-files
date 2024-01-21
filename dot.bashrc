@@ -91,12 +91,17 @@ HTMLTEMPLATE
 }
 
 _set_PS1() {
-    local last_ret=$?
+    local last_ret=$? job_cnt=
+    local -a j=($(jobs -p))
+
+    if [ ${#j[*]} -gt 0 ]; then
+        job_cnt="\[\e[33m\]${#j[*]} "
+    fi
 
     if [ 0 -eq $last_ret ]; then
-        export PS1="\[\e[32m\]$\[\e[m\] "
+        PS1="$job_cnt\[\e[32m\]$\[\e[m\] "
     else
-        export PS1="\[\e[31m\]$last_ret $\[\e[m\] "
+        PS1="$job_cnt\[\e[31m\]$last_ret $\[\e[m\] "
     fi
 
     return $last_ret
