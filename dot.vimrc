@@ -290,7 +290,8 @@ nmap <silent> <Leader>w :call ToggleTrailingWhiteSpaceHighlight()<cr>
 " Always make the trailing whitespace visible.
 augroup TrailingWS
     autocmd!
-    autocmd BufRead * let b:trailing_ws_id = matchadd('ErrorMsg', '\s\+$')
+    autocmd BufNewFile,BufRead,VimEnter *
+        \ let b:trailing_ws_id = matchadd('ErrorMsg', '\s\+$')
 augroup end
 
 " Set this so that Python files will be highlighted as wanted.
@@ -347,8 +348,9 @@ if has("autocmd")
     autocmd FileType text setlocal spell
     autocmd FileType rst setlocal spell
 
-    autocmd FileType gitcommit setlocal textwidth=75
+    autocmd FileType gitcommit setlocal spell textwidth=75
     autocmd FileType rust setlocal textwidth=79
+    autocmd FileType vhdl setlocal comments=:--,s1:/*,mb:*,ex:*/ commentstring=--%s
 
     autocmd FileType scheme setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
