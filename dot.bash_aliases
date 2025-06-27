@@ -55,6 +55,7 @@ alias t=tree
 # git
 alias ga='git add'
 alias gai='git add --interactive'
+alias gap='git add --patch'
 alias gb='git branch'
 alias gba='git branch --all'
 alias gc='git commit'
@@ -65,6 +66,7 @@ alias gk='gitk --all'
 alias gl='git log'
 alias gl3='git log -3'
 alias gs='git status -s -b'
+alias gsos='git show --oneline --stat'
 alias gsu='git status -s -b -unormal'
 
 hn=$(hostname)
