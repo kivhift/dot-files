@@ -27,8 +27,19 @@ alias vir='vim -R'
 alias h10='history 10'
 alias h20='history 20'
 
-alias ..='cd .. && pwd'
-alias ...='cd ../.. && pwd'
+__uppity() {
+    local i dist=""
+
+    for (( i = ${1:-1}; i > 0; i-- )); do
+        dist="$dist../"
+    done
+
+    [ -z "$dist" ] && return
+
+    cd $dist && echo $PWD
+}
+alias ..=__uppity
+alias ...='.. 2'
 
 alias m=less
 alias mk=make
