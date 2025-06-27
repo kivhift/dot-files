@@ -349,6 +349,13 @@ if has("autocmd")
     " indenting.
     filetype plugin indent on
 
+    autocmd FileType python {
+        # Beware ye who enter here. There be Vim9 script...
+        b:pybin = has('win32') ? 'py' : 'python3'
+        nn <f9> :up\|exe '!' .. b:pybin .. ' %'<cr>
+        im <f9> <esc><f9>
+    }
+
     " make sure that we know when we have a text file
     autocmd BufNewFile,BufRead *.txt,*.text setf text
     autocmd FileType text setlocal spell
