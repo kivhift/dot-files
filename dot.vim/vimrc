@@ -111,8 +111,9 @@ set nowrap linebreak
 " Keep things quiet!
 set visualbell
 
-" Instead of ~/tmp use ~/.vim/tmp.
-set directory=.,~/.vim/tmp,/var/tmp,/tmp
+" Put swap files in a central place with unique names or next to the edited
+" file.
+set directory=~/.vim/swap//,.
 
 " Show a little info
 set title
