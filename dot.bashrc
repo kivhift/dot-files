@@ -20,11 +20,11 @@ fi
 # Usage: _path_adder VARIABLE [ DIR ... ]
 _path_adder() {
     local -r P=$1 && shift
-    local d val=${!P}
+    local d val="${!P}"
     for d; do
-        [ -h $d ] && d=$(/bin/readlink -f $d 2> /dev/null)
+        [ -h "$d" ] && d=$(/bin/readlink -f "$d" 2> /dev/null)
         [ -d "$d" ] || continue
-        d=$(/bin/realpath $d 2> /dev/null)
+        d=$(/bin/realpath "$d" 2> /dev/null)
         case :$val: in
             # If it's already there, don't do anything.
             *:$d:*)
@@ -32,15 +32,15 @@ _path_adder() {
             # Otherwise, add it.
             *)
                 if [ -z "$val" ]; then
-                    val=$d
+                    val="$d"
                 else
-                    val=$val:$d
+                    val="$val":"$d"
                 fi
             ;;
         esac
     done
 
-    [ "$val" ] && export $P=$val
+    [ "$val" ] && export $P="$val"
 }
 
 alias add_to_path='_path_adder PATH'
@@ -56,7 +56,7 @@ nvim ()
         fi
         case $arg in
             *.sh | *.bash)
-                echo -e "#!/bin/bash\n\nset -eu -o pipefail\n" >> $arg
+                echo -e "#!/bin/bash\n\nset -euo pipefail\n" >> $arg
                 chmod +x $arg
             ;;
             *.pl)
@@ -90,18 +90,22 @@ HTMLTEMPLATE
     vim "$@"
 }
 
-_set_PS1() {
-    local last_ret=$? job_cnt=
+epoch2date() {
+    date -d "1970-01-01 UTC $1 seconds" +"%Y-%m-%d %T %z"
+}
+
+_set_ps1() {
+    local last_ret=$? jobs_tag=
     local -a j=($(jobs -p))
 
     if [ ${#j[*]} -gt 0 ]; then
-        job_cnt="\[\e[33m\]${#j[*]} "
+        jobs_tag="\[\e[33m\]${#j[*]} "
     fi
 
     if [ 0 -eq $last_ret ]; then
-        PS1="$job_cnt\[\e[32m\]$\[\e[m\] "
+        PS1="$jobs_tag\[\e[32m\]$\[\e[m\] "
     else
-        PS1="$job_cnt\[\e[31m\]$last_ret $\[\e[m\] "
+        PS1="$jobs_tag\[\e[31m\]$last_ret $\[\e[m\] "
     fi
 
     return $last_ret
@@ -122,13 +126,13 @@ PERL5LIB=~/lib/perl
 export CVS_RSH=ssh
 export EDITOR=vim
 export PAGER=less
-export LESS=FRX
+export LESS="FMRSWX --use-color"
 export SHELL=/bin/bash
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
 export PATH PS2 COLORFGBG REPLYTO PERL5LIB
 export PYTHONPATH PYTHONSTARTUP
-export PROMPT_COMMAND=_set_PS1
+export PROMPT_COMMAND=_set_ps1
 
 [ -x /usr/bin/dircolors ] && [ -r ~/.dir_colors ] \
     && eval $(/usr/bin/dircolors -b ~/.dir_colors)
