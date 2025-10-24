@@ -284,20 +284,13 @@ endfunction
 set virtualedit=block
 nmap <silent> // :nohlsearch<cr>
 
-function! ToggleTrailingWhiteSpaceHighlight()
-    if exists('b:trailing_ws_id')
-        call matchdelete(b:trailing_ws_id)
-        unlet b:trailing_ws_id
-    else
-        let b:trailing_ws_id = matchadd('ErrorMsg', '\s\+$')
-    endif
-endfunction
-nmap <silent> <Leader>w :call ToggleTrailingWhiteSpaceHighlight()<cr>
+nmap <silent> <leader>w :setlocal wrap!<cr>
+
 " Always make the trailing whitespace visible.
 augroup TrailingWS
     autocmd!
     autocmd BufNewFile,BufRead,VimEnter *
-        \ let b:trailing_ws_id = matchadd('ErrorMsg', '\s\+$')
+        \ let b:_tws_id = matchadd('ErrorMsg', '\s\+$')
 augroup end
 
 " Set this so that Python files will be highlighted as wanted.
