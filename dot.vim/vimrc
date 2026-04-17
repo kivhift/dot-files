@@ -574,3 +574,7 @@ endfunction
 packadd minpac
 call minpac#init()
 call minpac#add('tpope/vim-commentary')
+call minpac#add('dense-analysis/ale')
+
+" Set up individual file types as needed.
+let g:ale_enabled = 0
