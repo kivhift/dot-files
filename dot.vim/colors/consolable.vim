@@ -20,7 +20,7 @@ if has('gui_running') || (has('termguicolors') && &termguicolors)
     hi Normal guifg=#a8a8a8 guibg=#000000 gui=NONE cterm=NONE
 
     hi ColorColumn guifg=NONE guibg=#1c1c1c gui=NONE cterm=NONE
-    hi Conceal guifg=NONE guibg=NONE gui=reverse cterm=reverse
+    hi Conceal guifg=fg guibg=bg gui=reverse cterm=reverse
     hi Cursor guifg=NONE guibg=NONE gui=NONE cterm=NONE
     hi CursorColumn guifg=NONE guibg=#262626 gui=NONE cterm=NONE
     hi CursorIM guifg=NONE guibg=NONE gui=NONE cterm=NONE
@@ -46,12 +46,12 @@ if has('gui_running') || (has('termguicolors') && &termguicolors)
     hi PmenuThumb guifg=NONE guibg=#8a8a8a gui=NONE cterm=NONE
     hi Question guifg=#00af00 guibg=NONE gui=NONE cterm=NONE
     hi Search guifg=#00af00 guibg=#5f0000 gui=NONE cterm=NONE
-    hi SignColumn guifg=NONE guibg=NONE gui=NONE cterm=NONE
+    hi SignColumn guifg=fg guibg=bg gui=NONE cterm=NONE
     hi SpecialKey guifg=#afaf00 guibg=NONE gui=NONE cterm=NONE
-    hi SpellBad guifg=#d70000 guibg=NONE gui=underline cterm=underline
-    hi SpellCap guifg=#005fff guibg=NONE gui=underline cterm=underline
-    hi SpellLocal guifg=#d78700 guibg=NONE gui=underline cterm=underline
-    hi SpellRare guifg=#5f5f00 guibg=NONE gui=underline cterm=underline
+    hi SpellBad guifg=#d70000 guibg=bg gui=underline cterm=underline
+    hi SpellCap guifg=#005fff guibg=bg gui=underline cterm=underline
+    hi SpellLocal guifg=#d78700 guibg=bg gui=underline cterm=underline
+    hi SpellRare guifg=#5f5f00 guibg=bg gui=underline cterm=underline
     hi StatusLine guifg=#00d700 guibg=#262626 gui=underline cterm=underline
     hi StatusLineNC guifg=#585858 guibg=#262626 gui=underline cterm=underline
     hi TabLine guifg=#585858 guibg=NONE gui=underline cterm=underline
@@ -59,7 +59,7 @@ if has('gui_running') || (has('termguicolors') && &termguicolors)
     hi TabLineSel guifg=#00d700 guibg=#262626 gui=underline cterm=underline
     hi Title guifg=NONE guibg=NONE gui=NONE cterm=NONE
     hi VertSplit guifg=#005f00 guibg=#262626 gui=underline cterm=underline
-    hi Visual guifg=NONE guibg=#00005f gui=NONE cterm=NONE
+    hi Visual guifg=#ff00af guibg=#00005f gui=italic,underline cterm=italic,underline
     hi VisualNOS guifg=NONE guibg=NONE gui=NONE cterm=NONE
     hi WarningMsg guifg=#af0000 guibg=NONE gui=NONE cterm=NONE
     hi WildMenu guifg=#d7af00 guibg=#870000 gui=underline cterm=underline
@@ -106,7 +106,7 @@ if 256 == &t_Co
     hi Normal ctermfg=248 ctermbg=0 cterm=NONE
 
     hi ColorColumn ctermfg=NONE ctermbg=234 cterm=NONE
-    hi Conceal ctermfg=NONE ctermbg=NONE cterm=reverse
+    hi Conceal ctermfg=fg ctermbg=bg cterm=reverse
     hi Cursor ctermfg=NONE ctermbg=NONE cterm=NONE
     hi CursorColumn ctermfg=NONE ctermbg=235 cterm=NONE
     hi CursorIM ctermfg=NONE ctermbg=NONE cterm=NONE
@@ -132,12 +132,12 @@ if 256 == &t_Co
     hi PmenuThumb ctermfg=NONE ctermbg=245 cterm=NONE
     hi Question ctermfg=34 ctermbg=NONE cterm=NONE
     hi Search ctermfg=34 ctermbg=52 cterm=NONE
-    hi SignColumn ctermfg=NONE ctermbg=NONE cterm=NONE
+    hi SignColumn ctermfg=fg ctermbg=bg cterm=NONE
     hi SpecialKey ctermfg=142 ctermbg=NONE cterm=NONE
-    hi SpellBad ctermfg=160 ctermbg=NONE cterm=underline
-    hi SpellCap ctermfg=27 ctermbg=NONE cterm=underline
-    hi SpellLocal ctermfg=172 ctermbg=NONE cterm=underline
-    hi SpellRare ctermfg=58 ctermbg=NONE cterm=underline
+    hi SpellBad ctermfg=160 ctermbg=bg cterm=underline
+    hi SpellCap ctermfg=27 ctermbg=bg cterm=underline
+    hi SpellLocal ctermfg=172 ctermbg=bg cterm=underline
+    hi SpellRare ctermfg=58 ctermbg=bg cterm=underline
     hi StatusLine ctermfg=40 ctermbg=235 cterm=underline
     hi StatusLineNC ctermfg=240 ctermbg=235 cterm=underline
     hi TabLine ctermfg=240 ctermbg=NONE cterm=underline
@@ -145,7 +145,7 @@ if 256 == &t_Co
     hi TabLineSel ctermfg=40 ctermbg=235 cterm=underline
     hi Title ctermfg=NONE ctermbg=NONE cterm=NONE
     hi VertSplit ctermfg=22 ctermbg=235 cterm=underline
-    hi Visual ctermfg=NONE ctermbg=17 cterm=NONE
+    hi Visual ctermfg=199 ctermbg=17 cterm=italic,underline
     hi VisualNOS ctermfg=NONE ctermbg=NONE cterm=NONE
     hi WarningMsg ctermfg=124 ctermbg=NONE cterm=NONE
     hi WildMenu ctermfg=178 ctermbg=88 cterm=underline

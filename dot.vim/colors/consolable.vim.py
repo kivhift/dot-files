@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 '''Generate consolable.vim color scheme.'''
 
@@ -39,7 +39,7 @@ scheme_template = '''\
     hi Normal ${_}fg=$_248 ${_}bg=$_0 ${_}=NONE
 
     hi ColorColumn ${_}fg=NONE ${_}bg=$_234 ${_}=NONE
-    hi Conceal ${_}fg=NONE ${_}bg=NONE ${_}=reverse
+    hi Conceal ${_}fg=fg ${_}bg=bg ${_}=reverse
     hi Cursor ${_}fg=NONE ${_}bg=NONE ${_}=NONE
     hi CursorColumn ${_}fg=NONE ${_}bg=$_235 ${_}=NONE
     hi CursorIM ${_}fg=NONE ${_}bg=NONE ${_}=NONE
@@ -65,12 +65,12 @@ scheme_template = '''\
     hi PmenuThumb ${_}fg=NONE ${_}bg=$_245 ${_}=NONE
     hi Question ${_}fg=$_34 ${_}bg=NONE ${_}=NONE
     hi Search ${_}fg=$_34 ${_}bg=$_52 ${_}=NONE
-    hi SignColumn ${_}fg=NONE ${_}bg=NONE ${_}=NONE
+    hi SignColumn ${_}fg=fg ${_}bg=bg ${_}=NONE
     hi SpecialKey ${_}fg=$_142 ${_}bg=NONE ${_}=NONE
-    hi SpellBad ${_}fg=$_160 ${_}bg=NONE ${_}=underline
-    hi SpellCap ${_}fg=$_27 ${_}bg=NONE ${_}=underline
-    hi SpellLocal ${_}fg=$_172 ${_}bg=NONE ${_}=underline
-    hi SpellRare ${_}fg=$_58 ${_}bg=NONE ${_}=underline
+    hi SpellBad ${_}fg=$_160 ${_}bg=bg ${_}=underline
+    hi SpellCap ${_}fg=$_27 ${_}bg=bg ${_}=underline
+    hi SpellLocal ${_}fg=$_172 ${_}bg=bg ${_}=underline
+    hi SpellRare ${_}fg=$_58 ${_}bg=bg ${_}=underline
     hi StatusLine ${_}fg=$_40 ${_}bg=$_235 ${_}=underline
     hi StatusLineNC ${_}fg=$_240 ${_}bg=$_235 ${_}=underline
     hi TabLine ${_}fg=$_240 ${_}bg=NONE ${_}=underline
@@ -78,7 +78,7 @@ scheme_template = '''\
     hi TabLineSel ${_}fg=$_40 ${_}bg=$_235 ${_}=underline
     hi Title ${_}fg=NONE ${_}bg=NONE ${_}=NONE
     hi VertSplit ${_}fg=$_22 ${_}bg=$_235 ${_}=underline
-    hi Visual ${_}fg=NONE ${_}bg=$_17 ${_}=NONE
+    hi Visual ${_}fg=$_199 ${_}bg=$_17 ${_}=italic,underline
     hi VisualNOS ${_}fg=NONE ${_}bg=NONE ${_}=NONE
     hi WarningMsg ${_}fg=$_124 ${_}bg=NONE ${_}=NONE
     hi WildMenu ${_}fg=$_178 ${_}bg=$_88 ${_}=underline
