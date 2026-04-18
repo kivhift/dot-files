@@ -286,11 +286,17 @@ nmap <silent> // :nohlsearch<cr>
 
 nmap <silent> <leader>w :setlocal wrap!<cr>
 
-" Always make the trailing whitespace visible.
+" Always make trailing white space visible.
 augroup TrailingWS
     autocmd!
-    autocmd BufNewFile,BufRead,VimEnter *
-        \ let b:_tws_id = matchadd('ErrorMsg', '\s\+$')
+    " matchadd() sets pattern matches per window. So, when first starting up,
+    " or when entering a window, set the match for trailing whitespace. And,
+    " to guard against setting multiple matches, use a window variable to keep
+    " up with if the match is set. Don't want to bog Vim down...
+    autocmd VimEnter,WinEnter *
+        \ if !exists('w:_tws_mid')
+        \ |   let w:_tws_mid = matchadd('ErrorMsg', '\s\+$')
+        \ | endif
 augroup end
 
 " Set this so that Python files will be highlighted as wanted.
