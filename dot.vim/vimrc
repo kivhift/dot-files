@@ -123,7 +123,7 @@ set title
 " more...  So, make the shift width and number of logical spaces per tab be 4
 " and expand tabs.  However, respect stuff that's already there and use an
 " autocmd below to detect tabs and adjust to 8 with no expansion.
-set shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+set tabstop=4 shiftwidth=0 softtabstop=-1 expandtab
 
 " Make < and > round to shiftwidth columns as well.
 set shiftround
