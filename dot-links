@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Copyright (c) 2017, 2022 Joshua Hughes <kivhift@gmail.com>
+# Copyright (c) 2017, 2022, 2026 Joshua Hughes <kivhift@gmail.com>
 #
 set -eu -o pipefail
 
@@ -21,17 +21,17 @@ usage: ${0##*/} [-b <basedir>] [-d] [-h] [-l <link>] [-L <links>] [-r] [-v]
 die() {
     local usage=
     [ $# -gt 0 ] && [ "$1" = "-u" ] && usage="y" && shift
-    [ $# -gt 0 ] && echo " ** $@"
+    [ $# -gt 0 ] && echo " ** $*"
     [ "$usage" ] && echo && print_usage
     exit 1
 }
 
 declare -A to_link=()
-declare x opt base=$HOME remove= show_diff_status= view_diffs=
+declare x opt base=$HOME remove='' show_diff_status='' view_diffs=
 while getopts ":b:dhL:l:rv" opt; do
     case $opt in
     b)
-        [ -d $OPTARG ] || die -u "$OPTARG is not an existing directory"
+        [ -d "$OPTARG" ] || die -u "$OPTARG is not an existing directory"
         base=$OPTARG
         ;;
     d)
@@ -42,13 +42,13 @@ while getopts ":b:dhL:l:rv" opt; do
         exit 0
         ;;
     L)
-        [ -r $OPTARG ] || die -u "Could not open $OPTARG for reading"
+        [ -r "$OPTARG" ] || die -u "Could not open $OPTARG for reading"
         declare -a line
-        while read -a line; do
-            for opt in ${line[*]}; do
+        while read -r -a line; do
+            for opt in "${line[@]}"; do
                 to_link[$opt]=1
             done
-        done < $OPTARG
+        done < "$OPTARG"
         ;;
     l)
         to_link[$OPTARG]=1
@@ -68,27 +68,27 @@ while getopts ":b:dhL:l:rv" opt; do
     esac
 done
 
-[ -d $base ] || die "$base is not an existing directory"
+[ -d "$base" ] || die "$base is not an existing directory"
 
 if [ "$show_diff_status" ]; then
     declare ans cfg
     declare -A diffs=()
     for x in $(find . -mindepth 1 -maxdepth 1 -name 'dot.*'); do
         cfg=$base/${x#'./dot'}
-        [ -e $cfg ] || { echo " ? ${cfg##*/}"; continue; }
-        diff -r $cfg $x > /dev/null || diffs[$cfg]=$x
+        [ -e "$cfg" ] || { echo " ? ${cfg##*/}"; continue; }
+        diff -r "$cfg" "$x" > /dev/null || diffs[$cfg]=$x
     done
 
     for cfg in ${!diffs[*]}; do
         echo " ! ${cfg##*/}"
     done
 
-    [ "$view_diffs" -a ${#diffs[*]} -gt 0 ] || exit 0
+    [ "$view_diffs" ] && [ ${#diffs[*]} -gt 0 ] || exit 0
 
     for cfg in ${!diffs[*]}; do
-        [ -f ${diffs[$cfg]} ] || continue
-        read -p "vimdiff ${cfg##*/}?: [y]: " ans
-        [ -z "$ans" -o "$ans" == "y" ] && vimdiff ${diffs[$cfg]} $cfg
+        [ -f "${diffs[$cfg]}" ] || continue
+        read -r -p "vimdiff ${cfg##*/}?: [y]: " ans
+        [ -z "$ans" ] || [ "$ans" == "y" ] && vimdiff "${diffs[$cfg]}" "$cfg"
     done
     exit 0
 fi
@@ -96,15 +96,15 @@ fi
 [ ${#to_link[*]} -gt 0 ] || die -u "You didn't given anything to link"
 for x in ${!to_link[*]}; do
     [[ $x =~ dot[.].+ ]] || die "$x does not start with 'dot.'"
-    [ -r $x ] || die "Could not find $x or it's not readable"
+    [ -r "$x" ] || die "Could not find $x or it's not readable"
 done
 
 declare name targ
 for x in ${!to_link[*]}; do
     targ=$PWD/$x
     name=$base/${x#dot}
-    [ -h $name ] && rm $name
+    [ -h "$name" ] && rm "$name"
     [ -z "$remove" ] || continue
-    [ ! -e $name ] || die "$name already exists and isn't a symlink"
-    ln -s -T $targ $name || die "Had trouble linking $x"
+    [ ! -e "$name" ] || die "$name already exists and isn't a symlink"
+    ln -s -T "$targ" "$name" || die "Had trouble linking $x"
 done
