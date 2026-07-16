@@ -9,5 +9,6 @@ dot.inputrc
 dot.ipython
 dot.pythonrc
 dot.taskrc
+dot.tigrc
 dot.tmux.conf
 dot.vim
