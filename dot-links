@@ -73,7 +73,7 @@ done
 if [ "$show_diff_status" ]; then
     declare ans cfg
     declare -A diffs=()
-    for x in $(find . -mindepth 1 -maxdepth 1 -name 'dot.*'); do
+    find . -mindepth 1 -maxdepth 1 -name 'dot.*' | while read -r x; do
         cfg=$base/${x#'./dot'}
         [ -e "$cfg" ] || { echo " ? ${cfg##*/}"; continue; }
         diff -r "$cfg" "$x" > /dev/null || diffs[$cfg]=$x
