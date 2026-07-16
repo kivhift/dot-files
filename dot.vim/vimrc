@@ -582,5 +582,11 @@ call minpac#init()
 call minpac#add('tpope/vim-commentary')
 call minpac#add('dense-analysis/ale')
 
+let b:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 " Set up individual file types as needed.
-let g:ale_enabled = 0
+let g:ale_linters_explicit = 1
+
+nmap <silent> [W <plug>(ale_first)
+nmap <silent> ]W <plug>(ale_last)
+nmap <silent> [w <plug>(ale_previous)
+nmap <silent> ]w <plug>(ale_next)
