@@ -1,0 +1,37 @@
+# Mostly use the default values, except for...
+line-length = 80
+
+[format]
+docstring-code-format = true
+line-ending = "lf"
+quote-style = "preserve"
+skip-magic-trailing-comma = true
+
+[lint]
+select = [
+    "B",
+    "E",
+    "F",
+    "FURB",
+    "I",
+    "N",
+    "SIM",
+    "UP",
+    "W",
+]
+
+ignore = [
+    # Per the Ruff documentation, since we've selected "E" above, ignore these.
+    "E111",
+    "E114",
+    "E117",
+    # Yoda conditions like I do.
+    "SIM300",
+    # Verdammt noch mal, Ich mag die .split()s!
+    "SIM905",
+    "W191",
+]
+
+[lint.isort]
+lines-between-types = 1
+split-on-trailing-comma = false

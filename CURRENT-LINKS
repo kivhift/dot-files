@@ -8,6 +8,8 @@ dot.hgrc
 dot.inputrc
 dot.ipython
 dot.pythonrc
+dot.ruff.toml
+dot.rustfmt.toml
 dot.taskrc
 dot.tigrc
 dot.tmux.conf
