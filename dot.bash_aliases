@@ -69,6 +69,12 @@ alias gs='git status -s -b'
 alias gsos='git show --oneline --stat'
 alias gsu='git status -s -b -unormal'
 
+# Aliases inspired by Jörg Arndt's configs.
+alias -- +=pushd
+alias -- -=popd
+alias -- +x='chmod -c +x'
+alias -- -r='chmod -c go-r'
+
 hn=$(hostname)
 hna=~/.bash_aliases_${hn,,}
 [ -r $hna ] && . $hna
