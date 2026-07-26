@@ -1,3 +1,5 @@
+# shellcheck disable=SC1090
+# vim: ft=bash
 # Stuff for a login shell should go in here.
 umask 0022
 

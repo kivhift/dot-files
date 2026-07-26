@@ -1,4 +1,5 @@
-# ls
+# shellcheck disable=SC1090
+# vim:ft=bash
 alias ls='ls --color=auto'
 
 # This function lists dot files for the given argument or the current
@@ -7,9 +8,10 @@ alias ls='ls --color=auto'
 __ls_dots()
 {
     [ -n "$1" ] && [ -d "$1" ] && local root="${1%%/}/"
-    local listees=$(echo "$root".[!.]*)
+    local listees
+    listees=$(echo "$root".[!.]*)
     if [ "$listees" != "$root"'.[!.]*' ] ; then
-        ls -d $listees $@
+        ls -d "$listees" "$@"
     fi
 }
 alias l.=__ls_dots
@@ -36,14 +38,14 @@ __uppity() {
 
     [ -z "$dist" ] && return
 
-    cd $dist && echo $PWD
+    cd $dist && echo "$PWD"
 }
 alias ..=__uppity
 alias ...='.. 2'
 
 alias m=less
 alias mk=make
-alias mp='ps fj -u '$(id -u)' -U '$(id -u)
+alias mp='ps fj -u $(id -u) -U $(id -u)'
 alias gv='gv -spartan -watch'
 alias enscript='enscript -2 -r -M Letter'
 alias cal='cal -3m'
@@ -70,16 +72,17 @@ alias gsos='git show --oneline --stat'
 alias gsu='git status -s -b -unormal'
 
 # Aliases inspired by Jörg Arndt's configs.
+# shellcheck disable=SC2290
 alias -- +=pushd
 alias -- -=popd
 alias -- +x='chmod -c +x'
+alias -- -x='chmod -c -x'
+alias -- +r='chmod -c +r'
 alias -- -r='chmod -c go-r'
 
 hn=$(hostname)
 hna=~/.bash_aliases_${hn,,}
-[ -r $hna ] && . $hna
+[ -r "$hna" ] && . "$hna"
 la=~/.bash_aliases_local
-[ -r $la ] && . $la
+[ -r "$la" ] && . "$la"
 unset hn hna la
-
-# vim:ft=sh
