@@ -11,7 +11,9 @@ __ls_dots()
     local listees
     listees=$(echo "$root".[!.]*)
     if [ "$listees" != "$root"'.[!.]*' ] ; then
-        ls -d "$listees" "$@"
+        # We want word splitting for listees...
+        # shellcheck disable=SC2086
+        ls -d $listees "$@"
     fi
 }
 alias l.=__ls_dots
